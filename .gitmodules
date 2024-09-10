@@ -1,0 +1,3 @@
+[submodule "packages/ayasofyazilim-ui"]
+	path = packages/ayasofyazilim-ui
+	url = https://github.com/ayasofyazilim-clomerce/ayasofyazilim-ui.git

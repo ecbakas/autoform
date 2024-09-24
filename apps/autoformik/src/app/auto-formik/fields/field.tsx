@@ -5,6 +5,9 @@ import { cn } from "@/lib/utils";
 import { ErrorMessage as DefaultErrorMessage } from "formik";
 import { FormikFormType } from "..";
 import { createValue, normalizeName } from "../utils";
+import { NumberField } from "./number";
+import { CheckboxField } from "./checkbox";
+import { InputField } from "./input";
 
 export type FieldTypes = "string" | "number" | "boolean" | "integer" | "null";
 export interface IFieldProps {
@@ -58,83 +61,14 @@ export default function Field({
   );
 }
 
-function FieldsByType({
-  type,
-  form,
-  placeholder,
-  required,
-  name,
-  showLabel,
-  fieldClassName,
-  fieldContainerClassName,
-  labelClassName,
-}: IFieldProps) {
-  const _name = normalizeName(name);
-  switch (type) {
+function FieldsByType(props: IFieldProps) {
+  switch (props.type) {
     case "number":
-      return (
-        <div className={fieldContainerClassName}>
-          {showLabel && (
-            <Label className={labelClassName} htmlFor={name}>
-              {_name}
-              {required && <span className="text-destructive">*</span>}
-            </Label>
-          )}
-          <Input
-            type={"number"}
-            placeholder={placeholder}
-            name={name}
-            required={required}
-            className={fieldClassName}
-            onBlur={form.handleBlur}
-            onChange={form.handleChange}
-            value={form.values[name] as number}
-          />
-        </div>
-      );
+      return <NumberField {...props} />;
     case "boolean":
-      return (
-        <div
-          className={cn("flex items-center gap-2 h-9", fieldContainerClassName)}
-        >
-          <Checkbox
-            name={name}
-            required={required}
-            className={fieldClassName}
-            // onBlur={form.handleBlur}
-            onChange={form.handleChange}
-            // defaultChecked={form.values[name] as boolean}
-            defaultChecked={createValue(name, form.values)}
-          />
-          {showLabel && (
-            <Label className={labelClassName}>
-              {_name}
-              {required && <span className="text-destructive">*</span>}
-            </Label>
-          )}
-        </div>
-      );
+      return <CheckboxField {...props} />;
     default:
-      return (
-        <div className={fieldContainerClassName}>
-          {showLabel && (
-            <Label className={labelClassName}>
-              {_name}
-              {required && <span className="text-destructive">*</span>}
-            </Label>
-          )}
-          <Input
-            type={"text"}
-            placeholder={placeholder}
-            name={name}
-            required={required}
-            className={fieldClassName}
-            onBlur={form.handleBlur}
-            onChange={form.handleChange}
-            value={createValue(name, form.values)}
-          />
-        </div>
-      );
+      return <InputField {...props} />;
   }
 }
 

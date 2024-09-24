@@ -35,7 +35,6 @@ export function AutoFormikObject({
             );
           }
           if (field.type === "array") {
-            console.log(fullName + index);
             return (
               <FieldsFromArray
                 key={fullName + index}

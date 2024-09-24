@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import AutoFormik, { ValueType } from "../../auto-formik";
-import { $AutoFormikSchema } from "../../auto-formik/types";
+import AutoFormik from "../../auto-formik";
+import { $AutoFormikSchema, ValueType } from "../../auto-formik/types";
 import { $UniRefund_CRMService_Merchants_CreateMerchantDto as TestSchema } from "./schema.ts";
 
 export default function Page() {
@@ -38,8 +38,6 @@ export default function Page() {
         className="gap-2"
         onSubmit={(values: ValueType) => {
           setSubmitting(true);
-          //console.log(values);
-          console.log(values);
           setSubmitting(false);
         }}
         isLoading={isSubmitting}

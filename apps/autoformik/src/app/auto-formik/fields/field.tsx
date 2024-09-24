@@ -3,7 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { ErrorMessage as DefaultErrorMessage } from "formik";
-import { FormikFormType, ValueType } from "..";
+import { FormikFormType } from "..";
+import { createValue, normalizeName } from "../utils";
 
 export type FieldTypes = "string" | "number" | "boolean" | "integer" | "null";
 export interface IFieldProps {
@@ -136,35 +137,31 @@ function FieldsByType({
       );
   }
 }
-export function createValue(name: string, param: any) {
-  const temp = name.split(".");
-  if (!param) return undefined;
-  if (temp.length == 1) {
-    return param[temp[0]];
-  }
-  return createValue(temp.slice(1).join("."), param[temp[0]]);
-}
-// function createValue2(name: string, param: any) {
-//   const keys: Array<string> = name.split(".");
-//   let value = param;
-//   for (let key of keys) {
-//     if (typeof value[key] === "object" && value[key]) value = value[key];
-//   }
-//   return value;
-// }
-export function normalizeName(name: string) {
-  // return name;
 
-  const _name = name.split(".").at(-1);
-  let returnName = _name;
-  if (!returnName) return name;
-  // remove is from the begining of the string if it exists
-  if (returnName.startsWith("is")) {
-    returnName = returnName.slice(2);
-  }
-  // seperate camelCase
-  returnName = returnName.replace(/([A-Z])/g, " $1");
-  // make first letter uppercase
-  returnName = returnName.charAt(0).toUpperCase() + returnName.slice(1);
-  return returnName;
+export function CreateField({
+  name,
+  type,
+  placeholder,
+  required = false,
+  isLoading = false,
+  showLabel = true,
+  className,
+  fieldClassName,
+  errorClassName,
+  form,
+}: IFieldProps): JSX.Element {
+  return (
+    <Field
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      required={required}
+      isLoading={isLoading}
+      showLabel={showLabel}
+      className={className}
+      fieldClassName={fieldClassName}
+      errorClassName={errorClassName}
+      form={form}
+    />
+  );
 }

@@ -100,3 +100,13 @@ export interface ArrayProperty {
 // export interface Properties {
 //   [key: string]: PropertyType;
 // }
+
+export type Value =
+  | number
+  | string
+  | boolean
+  | null
+  | undefined
+  | object
+  | Array<ValueType>;
+export type ValueType = Record<string, Value>;

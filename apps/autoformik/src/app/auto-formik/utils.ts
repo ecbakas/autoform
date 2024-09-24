@@ -1,6 +1,6 @@
 import { Ajv, DefinedError } from "ajv";
 import addFormats from "ajv-formats";
-import { ValueType } from ".";
+import { ArrayProperty, ObjectProperty, Value, ValueType } from "./types";
 
 export function validateBySchema({
   values,
@@ -45,4 +45,86 @@ export function humanReadableFormat(format: string) {
     default:
       return "text";
   }
+}
+
+export function createValue(name: string, param: any) {
+  const temp = name.split(".");
+  if (!param) return undefined;
+  if (temp.length == 1) {
+    return param[temp[0]];
+  }
+  return createValue(temp.slice(1).join("."), param[temp[0]]);
+}
+export function normalizeName(name: string) {
+  // return name;
+
+  const _name = name.split(".").at(-1);
+  let returnName = _name;
+  if (!returnName) return name;
+  // remove is from the begining of the string if it exists
+  if (returnName.startsWith("is")) {
+    returnName = returnName.slice(2);
+  }
+  // seperate camelCase
+  returnName = returnName.replace(/([A-Z])/g, " $1");
+  // make first letter uppercase
+  returnName = returnName.charAt(0).toUpperCase() + returnName.slice(1);
+  return returnName;
+}
+
+export function initialsFromObject({
+  name,
+  object,
+}: {
+  name?: string;
+  object: ObjectProperty;
+}) {
+  let _temp: Record<string, object> = {};
+  if (name) _temp = { [name]: {} };
+
+  Object.entries(object.properties || {}).forEach(([key, field]) => {
+    if (key === "extraProperties") return;
+    if (field.type === "object") {
+      if (name)
+        Object.assign(
+          _temp[name],
+          initialsFromObject({ name: key, object: field }),
+        );
+      else
+        Object.assign(_temp, initialsFromObject({ name: key, object: field }));
+    } else if (field.type === "array") {
+      if (name)
+        Object.assign(
+          _temp[name],
+          initialsFromArray({ name: key, array: field }),
+        );
+      else Object.assign(_temp, initialsFromArray({ name: key, array: field }));
+    } else {
+      if (name) Object.assign(_temp[name], { [key]: "1" });
+      else Object.assign(_temp, { [key]: "1" });
+    }
+  });
+  return _temp;
+}
+export function initialsFromArray({
+  name,
+  array,
+}: {
+  name: string;
+  array: ArrayProperty;
+}) {
+  let _temp: Record<string, Array<Value>> = { [name]: [] };
+  let _tempArray: Array<Record<string, Value>> = [];
+  Object.entries(array.items?.properties || {}).forEach(([key, field]) => {
+    if (key === "extraProperties") return;
+    if (field.type === "object") {
+      _tempArray.push(initialsFromObject({ name: key, object: field }));
+    } else if (field.type === "array") {
+      _tempArray.push(initialsFromArray({ name: key, array: field }));
+    } else {
+      _tempArray.push({ [key]: "1" });
+    }
+    // _temp[name] = _tempArray; neden açınca çalışmıyor anlamadım
+  });
+  return _temp;
 }

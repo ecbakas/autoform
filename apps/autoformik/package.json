@@ -10,10 +10,12 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@ayasofyazilim/saas": "^0.0.42",
     "@repo/ayasofyazilim-ui": "workspace:*",
     "@repo/ui": "workspace:*",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "class-variance-authority": "^0.7.0",
     "formik": "^2.4.6",
     "mini-svg-data-uri": "^1.4.4",
     "next": "^14.2.3",

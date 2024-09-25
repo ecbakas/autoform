@@ -11,6 +11,8 @@ export const $UniRefund_CRMService_Merchants_CreateMerchantDto = {
     entityInformationTypes: {
       type: "array",
       items: {
+        required: ["organizations"],
+
         type: "object",
         properties: {
           extraProperties: {
@@ -77,7 +79,7 @@ export const $UniRefund_CRMService_Merchants_CreateMerchantDto = {
                             "areaCode",
                             "ituCountryCode",
                             "localNumber",
-                            "primaryFlag",
+                            // "primaryFlag",
                             "typeCode",
                           ],
                           type: "object",
@@ -491,6 +493,7 @@ export const $UniRefund_CRMService_Merchants_CreateMerchantDto = {
 };
 
 export const $UniRefund_CRMService_Merchants_CreateMerchantDtoX = {
+  required: ["users"],
   type: "object",
   properties: {
     extraProperties: {
@@ -500,11 +503,14 @@ export const $UniRefund_CRMService_Merchants_CreateMerchantDtoX = {
       readOnly: true,
     },
     users: {
+      // required: ["user", "userType"],
       type: "array",
       items: {
+        // required: ["username", "password", "userType"],
         type: "object",
         properties: {
           user: {
+            required: ["username", "password"],
             type: "object",
             properties: {
               username: {

@@ -1,6 +1,12 @@
 import { Ajv, DefinedError } from "ajv";
 import addFormats from "ajv-formats";
-import { ArrayProperty, ObjectProperty, Value, ValueType } from "./types";
+import {
+  ArrayProperty,
+  ObjectProperty,
+  SchemaTypes,
+  Value,
+  ValueType,
+} from "./types";
 
 export function validateBySchema({
   values,
@@ -100,8 +106,9 @@ export function initialsFromObject({
         );
       else Object.assign(_temp, initialsFromArray({ name: key, array: field }));
     } else {
-      if (name) Object.assign(_temp[name], { [key]: "1" });
-      else Object.assign(_temp, { [key]: "1" });
+      if (name)
+        Object.assign(_temp[name], { [key]: defaultsByType(field.type) });
+      else Object.assign(_temp, { [key]: defaultsByType(field.type) });
     }
   });
   return _temp;
@@ -122,9 +129,22 @@ export function initialsFromArray({
     } else if (field.type === "array") {
       _tempArray.push(initialsFromArray({ name: key, array: field }));
     } else {
-      _tempArray.push({ [key]: "1" });
+      _tempArray.push({ [key]: defaultsByType(field.type) });
     }
     // _temp[name] = _tempArray; neden açınca çalışmıyor anlamadım
   });
   return _temp;
+}
+
+function defaultsByType(type: SchemaTypes) {
+  switch (type) {
+    case "boolean":
+      return false;
+    case "number":
+      return 0;
+    case "string":
+      return "";
+    default:
+      return "";
+  }
 }

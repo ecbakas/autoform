@@ -11,6 +11,7 @@ import { FormikFormType } from "..";
 import { ArrayProperty } from "../types";
 import { AutoFormikObject } from "./object";
 import { createValue, initialsFromObject, normalizeName } from "../utils";
+import { useMemo } from "react";
 
 export function FieldsFromArray({
   array,
@@ -25,6 +26,7 @@ export function FieldsFromArray({
     <FieldArray name={name} key={name + 1}>
       {(arrayHelpers) => {
         const value = createValue(name, arrayHelpers.form.values);
+        // console.log(arrayHelpers.form.touched);
         return (
           <Accordion
             key={name}
@@ -38,8 +40,9 @@ export function FieldsFromArray({
                 {normalizeName(name)}
               </AccordionTrigger>
               <AccordionContent className="pl-4 pr-2">
-                {value ? (
+                {value && Array.isArray(value) ? (
                   value.map((_x: unknown, index: number) => {
+                    //BU BÖYLE OLMAZ HER VALUE CHANGEDE RE-RENDER ALIYOR 0 PERFORMANS
                     return (
                       <AutoFormikObject
                         key={name + "." + index}

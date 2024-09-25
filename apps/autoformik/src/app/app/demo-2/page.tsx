@@ -13,25 +13,23 @@ export default function Page() {
     <div>
       <AutoFormik
         // defaultValues={{
-        //   merchantId: "test@test.com",
-        //   entityInformationTypes: {
-        //     organizations: {
-        //       name: "111",
-        //       contactInformations: {
-        //         telephones: {
-        //           primaryFlag: true,
+        //   entityInformationTypes: [
+        //     {
+        //       individuals: [
+        //         {
+        //           contactInformations: [
+        //             {
+        //               addresses: [
+        //                 {
+        //                   addressLine: 55555,
+        //                 },
+        //               ],
+        //             },
+        //           ],
         //         },
-        //       },
-        //       // entityInformationTypes.organizations.contactInformations.telephones.primaryFlag
+        //       ],
         //     },
-        //     individuals: {
-        //       contactInformations: {
-        //         addresses: {
-        //           addressLine: 55555,
-        //         },
-        //       },
-        //     },
-        //   },
+        //   ],
         //   // addressId: "",
         // }}
         schema={TestSchema as $AutoFormikSchema}

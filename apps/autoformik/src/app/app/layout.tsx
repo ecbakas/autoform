@@ -20,16 +20,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       name: "Demo 2",
       link: "/app/demo-2",
     },
+    {
+      id: "demo-3",
+      name: "Demo 3",
+      link: "/app/demo-3",
+    },
   ];
   const sectionId = pathname.split("/app/")[1];
   return (
     <SectionLayout
-      noCard
       sections={sections}
       linkElement={Link}
       defaultActiveSectionId={sectionId}
     >
-      <SectionLayoutContent sectionId={sectionId}>
+      <SectionLayoutContent sectionId={sectionId} className="h-screen">
         {children}
       </SectionLayoutContent>
     </SectionLayout>
